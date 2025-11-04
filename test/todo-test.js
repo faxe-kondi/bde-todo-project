@@ -3,6 +3,11 @@ import { Selector } from 'testcafe';
 fixture`My Secret Page Test`
   .page(process.env.TEST_PAGE_URL);
 
+    // Test 0: Check if page loads
+test('Verify page loads', async t => {
+  await t.expect(Selector('body').exists).ok();
+});
+
     // Test 1: Add a new todo
 test('Add a new todo', async t => {
     const todoInput = Selector('#todo-input');
