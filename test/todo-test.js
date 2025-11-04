@@ -1,14 +1,7 @@
 import { Selector } from 'testcafe';
 
-
-const TODO_APP_URL = process.env.TODO_APP_URL;
-
-if (!TODO_APP_URL) {
-    throw new Error('TODO_APP_URL environment variable is not set');
-}
-
-fixture('Todo App E2E')
-    .page(TODO_APP_URL);
+fixture`My Secret Page Test`
+  .page(process.env.TEST_PAGE_URL);
 
     // Test 1: Add a new todo
 test('Add a new todo', async t => {
