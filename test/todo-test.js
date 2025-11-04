@@ -1,7 +1,7 @@
 import { Selector } from 'testcafe';
 
 fixture`Todo test`
-  .page(process.env.TEST_PAGE_URL);
+  .page(process.env.testPage);
 
     // Test 0: Check if page loads
 test('Verify page loads', async t => {

@@ -40,7 +40,7 @@ jobs:
         run: apt-get install -y chromium
 
       - name: Inject test page URL
-        run: echo "TEST_PAGE_URL=${{ secrets.TEST_PAGE_URL }}" >> $GITHUB_ENV
+        run: echo "testPage=${{ secrets.TEST_PAGE_URL }}" >> $GITHUB_ENV
 
       - name: Run tests
         run: testcafe chromium:headless test/*
