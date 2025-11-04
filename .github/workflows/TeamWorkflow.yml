@@ -3,7 +3,7 @@ name: TeamWorkflow
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   integration-delivery:
