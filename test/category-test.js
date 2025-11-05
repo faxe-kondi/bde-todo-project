@@ -1,14 +1,14 @@
 import { Selector } from 'testcafe';
 
 // for local testing
-fixture`Todo category test`
-  .page('http://localhost:5173');
+// fixture`Todo category test`
+//   .page('http://localhost:5173');
 
 // for pipeline test
-// fixture`Todo category test`
-//   .page(process.env.testPage);
+fixture`Todo category test`
+  .page(process.env.testPage);
 
-// 🧩 Test 4: Add a todo with a category
+// 🧩 Test 1: Add a todo with a category
 test('Add a todo with a category', async t => {
     const todoInput = Selector('#todo-input');
     const categoryInput = Selector('#category-input');
@@ -25,7 +25,7 @@ test('Add a todo with a category', async t => {
         .contains('Work');
 });
 
-// 🧩 Test 5: Filter todos by category
+// 🧩 Test 2: Filter todos by category
 test('Filter todos by category', async t => {
     const todoInput = Selector('#todo-input');
     const categoryInput = Selector('#category-input');
@@ -78,7 +78,7 @@ test('Filter todos by category', async t => {
         .gte(3);
 });
 
-// 🧩 Test 6: Edit a todo’s category
+// 🧩 Test 3: Edit a todo’s category
 test('Edit a todo’s category and verify updates', async t => {
     const todoInput = Selector('#todo-input');
     const categoryInput = Selector('#category-input');
