@@ -1,9 +1,9 @@
 import { Selector } from 'testcafe';
 
 fixture`Todo test`
-  .page('https://todo.tidslerne-2sem-projekt.dk');
+  .page(process.env.testPage);
 
-    // Test 0.5: Check if page loads
+    // Test 0: Check if page loads
 test('Verify page loads', async t => {
   await t.expect(Selector('body').exists).ok();
 });
