@@ -59,8 +59,11 @@ h1 {
 }
 
 .todo-form {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: auto auto;
   justify-content: space-between;
+  gap: 10px;
 }
 
 .todo-form input {
@@ -68,6 +71,15 @@ h1 {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 3px;
+}
+
+#todo-input {
+  grid-row: 1;
+  width: 125%;
+}
+
+#category-input {
+  grid-row: 1;
 }
 
 .todo-form button {
@@ -84,11 +96,20 @@ h1 {
   background: #218838;
 }
 
+.todo-nav {
+  margin: 1.34rem 0;
+}
+
+#category-filter {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
 .todo-list {
   list-style: none;
   padding: 0;
   margin: 0;
-
   display: grid;
   grid-template-columns: repeat(3, 1fr); 
   gap: 2.5rem; 
@@ -107,7 +128,12 @@ h1 {
 
 .todo-item span {
   font-size: 32px;
-  margin-bottom: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+#todo-category {
+  font-size: 16px;
+  margin-bottom: 1rem;
 }
 
 #buttonBox {

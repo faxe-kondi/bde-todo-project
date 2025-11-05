@@ -21,11 +21,17 @@ export interface Todo {
   id: number;
   text: string;
   completed: boolean;
+
+  // 9️⃣ NEW: Add category field to each todo
+  category?: string;
 }
 
 // Step 3: Initialize an empty array to store todos
 // Initialize an empty array: This array will store the list of todos.
 export let todos: Todo[] = [];
+
+// 9️⃣ NEW: Variable to store currently selected filter
+let currentFilter: string = 'all';
 
 // Step 4: Get references to the HTML elements
 // Get references to the HTML elements: These references will be used to interact with the DOM
@@ -33,18 +39,23 @@ const todoInput = document.getElementById('todo-input') as HTMLInputElement; // 
 const todoForm = document.querySelector('.todo-form') as HTMLFormElement;    // exist in HTML file
 const todoList = document.getElementById('todo-list') as HTMLUListElement;   // exist in HTML file
 
+// 9️⃣ NEW: Get reference to category input field
+const categoryInput = document.getElementById('category-input') as HTMLInputElement | null;
 
+// 9️⃣ NEW: Get reference to category filter dropdown (add this element to your HTML)
+const categoryFilter = document.getElementById('category-filter') as HTMLSelectElement | null;
 
 
 
 
 // Step 5: Function to add a new todo
 // Function to add a new todo: This function creates a new todo object and adds it to the array.
-export const addTodo = (text: string): void => {
+export const addTodo = (text: string, category?: string): void => { // 9️⃣ UPDATED: add category param
   const newTodo: Todo = {
     id: Date.now(), // Generate a unique ID based on the current timestamp
     text: text,
     completed: false,
+    category: category || 'Uncategorized', // 9️⃣ NEW: default category if none entered
   };
   todos.push(newTodo);
   console.log("Todo added: ", todos); // Log the updated list of todos to the console
@@ -57,94 +68,121 @@ const renderTodos = (): void => { // void because no return - what we are doing 
   // Clear the current list
   todoList.innerHTML = '';
 
-  // Iterate over the todos array and create list items for each todo
-  todos.forEach(todo => { // In this specific case, .forEach is more suitable because we are directly modifying the DOM for each todo item.
+  // 9️⃣ NEW: Filter todos based on current category filter
+  const filteredTodos = todos.filter(todo =>
+    currentFilter === 'all' || todo.category === currentFilter
+  );
+
+  // Iterate over the filtered todos array and create list items for each todo
+  filteredTodos.forEach(todo => { 
     const li = document.createElement('li');
     li.className = 'todo-item'; // Add a class to the list item
     // Use template literals to create the HTML content for each list item
     li.innerHTML = `
-      <span>${todo.text}</span>
-      <div id=buttonBox>
-      <button id="editBtn">Edit</button>
-      <button id="removeBtn">Remove</button>
+        <span>${todo.text}</span>
+        <span id="todo-category">${todo.category}</span> <!-- 9️⃣ NEW: show category -->
+      <div id="buttonBox">
+        <button id="editBtn">Edit</button>
+        <button id="removeBtn">Remove</button>
       </div>
     `;
-    // addRemoveButtonListener is further down in the code. We have onclick in the function instead of template literals. More safe to use addEventListener.
-    addRemoveButtonListener(li, todo.id); // Add event listener to the remove button. li is the parent element, and todo.id is the ID of the todo. 
-    addEditButtonListener(li, todo.id); // Add event listener to the remove button. li is the parent element, and todo.id is the ID of the todo. 
-    todoList.appendChild(li); // Append the list item to the ul element
+    addRemoveButtonListener(li, todo.id); 
+    addEditButtonListener(li, todo.id); 
+    todoList.appendChild(li);
   });
+
+  // 9️⃣ NEW: Update dropdown options every time list is rendered
+  updateCategoryFilterOptions();
 };
+
+// 9️⃣ NEW: Function to update category filter dropdown dynamically
+const updateCategoryFilterOptions = (): void => {
+  if (!categoryFilter) return;
+
+  // Get unique categories
+  const uniqueCategories = Array.from(new Set(todos.map(todo => todo.category)));
+
+  // Clear existing options
+  categoryFilter.innerHTML = '<option value="all">All</option>';
+
+  // Add each unique category as an option
+  uniqueCategories.forEach(category => {
+    if (category) {
+      const option = document.createElement('option');
+      option.value = category;
+      option.textContent = category;
+      categoryFilter.appendChild(option);
+    }
+  });
+
+  // Keep selected value persistent
+  categoryFilter.value = currentFilter;
+};
+
+// 9️⃣ NEW: Listen for filter changes
+categoryFilter?.addEventListener('change', (event: Event) => {
+  const target = event.target as HTMLSelectElement;
+  currentFilter = target.value;
+  renderTodos();
+});
 
 // Step 6.1: Function to render the list of todos
 // Initial render
-renderTodos(); // Call the renderTodos function to display the initial list of todos : Should be at the end of the code to ensure that the function is defined before it is called.
-// The initial render is important to display the list of todos when the page is first loaded. Without it, the list would be empty until a new todo is added.
-// Move it when code is complete ( refactoring ) 
+renderTodos();
 
 
 // Step 7: Event listener for the form submission
 // Event listener for the form submission: This listener handles the form submission, adds the new todo, and clears the input field.
 todoForm.addEventListener('submit', (event: Event) => {
-  event.preventDefault(); // Prevent the default form submission behavior
-  const text = todoInput.value.trim(); // Get the value of the input field and remove any leading or trailing whitespace - not needed, but good practice
-  if (text !== '') { // Check if the input field is not empty. Sort of a reverse falsey
-    addTodo(text);
-    todoInput.value = ''; // Clear the input field
+  event.preventDefault(); 
+  const text = todoInput.value.trim(); 
+  
+  // 9️⃣ NEW: Get category input value
+  const category = categoryInput ? categoryInput.value.trim() : '';
+
+  if (text !== '') { 
+    addTodo(text, category); // 9️⃣ UPDATED: pass category
+    todoInput.value = ''; 
+    if (categoryInput) categoryInput.value = ''; // 9️⃣ NEW: Clear category input
   }
 });
 
-//Improved code for step 7 - user input validation - move the error message to the top of the Typescript file
-const errorMessage = document.getElementById('error-message') as HTMLParagraphElement; // Should be moved to the top + added to the HTML file
+//Improved code for step 7 - user input validation
+const errorMessage = document.getElementById('error-message') as HTMLParagraphElement;
 
 todoForm.addEventListener('submit', (event: Event) => {
-  event.preventDefault(); // Prevent the default form submission behavior
-  const text = todoInput.value.trim(); // Get the value of the input field and remove any leading or trailing whitespace
+  event.preventDefault(); 
+  const text = todoInput.value.trim(); 
+  const category = categoryInput ? categoryInput.value.trim() : ''; // 9️⃣ NEW: include category input
 
-  if (text !== '') { // Check if the input field is empty
-    todoInput.classList.remove('input-error'); // Remove the error highlight if present
-    errorMessage.style.display = 'none'; // Hide the error message
-    addTodo(text); // Add the todo item
-    todoInput.value = ''; // Clear the input field
+  if (text !== '') { 
+    todoInput.classList.remove('input-error'); 
+    errorMessage.style.display = 'none'; 
+    addTodo(text, category); // 9️⃣ UPDATED: pass category
+    todoInput.value = ''; 
+    if (categoryInput) categoryInput.value = ''; // 9️⃣ NEW: clear category input
   } else {
-    console.log("Please enter a todo item"); // Provide feedback to the user
-    todoInput.classList.add('input-error'); // Add a class to highlight the error
-    errorMessage.style.display = 'block'; // Show the error message
+    console.log("Please enter a todo item"); 
+    todoInput.classList.add('input-error'); 
+    errorMessage.style.display = 'block'; 
   }
 });
-
 
 
 // Step 8: Function to removes all a todo by ID
-// Function to add event listener to the remove button - this function has an callback function that removes the todo item from the array.
 const addRemoveButtonListener = (li: HTMLLIElement, id: number): void => {
   const removeButton = li.querySelector('#removeBtn');
-  removeButton?.addEventListener('click', () => removeTodo(id)); // We have an optional chaining operator here to avoid errors if the button is not found - for example, if the button is removed from the DOM.
+  removeButton?.addEventListener('click', () => removeTodo(id)); 
 };
-/*
-example of explicit null checking - without optional chaining operator, but basically the same as above
-const addRemoveButtonListener = (li: HTMLLIElement, id: number): void => {
-  const removeButton = li.querySelector('button');
-  if (removeButton) {
-    removeButton.addEventListener('click', () => removeTodoById(id));
-  } else {
-    console.error(`Remove button not found for todo item with ID: ${id}`);
-  }
-};
-*/
-
 
 // Step 8: Function to remove a todo by ID
-// Function to remove a todo by ID: This function removes a todo from the array based on its ID.
 export const removeTodo = (id: number): void => {
   todos = todos.filter(todo => todo.id !== id);
-  renderTodos(); // Re-render the updated list of todos
+  renderTodos(); 
 }; 
-
 
 // Edit event listener - make button and add button to each todo
 const addEditButtonListener = (li: HTMLLIElement, id:number) => {
-  // make use of the editBtn id to edit the todo
   const editButton = li.querySelector('#editBtn')
   editButton?.addEventListener('click', () => editTodo(id)) 
 }
@@ -154,39 +192,15 @@ const editTodo = (id:number) => {
   const todo = todos.find(todo => todo.id === id)
   if (todo) {
     const text = prompt('Edit todo', todo.text)
+    // 9️⃣ NEW: allow editing of category
+    const category = prompt('Edit category', todo.category || '')
     if (text) {
       todo.text = text
+      todo.category = category || 'Uncategorized' // 9️⃣ NEW: update category
       renderTodos()
     }
   }
 }
-
-/**
- * color picker
- */
-
-// Function to change the background color of the page based on the color picker value
-const changeBackgroundColor = (color: string): void => {
-  document.body.style.backgroundColor = color;
-};
-
-// Function to initialize the color picker event listener
-const initializeColorPicker = (): void => {
-  const colorPicker = document.getElementById('colorPicker') as HTMLInputElement; // encapsulate the color picker element to this function
-  if (colorPicker) {
-    colorPicker.addEventListener('input', (event: Event) => {
-      const target = event.target as HTMLInputElement;
-      changeBackgroundColor(target.value);
-    });
-  } else {
-    console.error('Color picker element not found');
-  }
-};
-
-// Call the initializeColorPicker function when the DOM is fully loaded
-document.addEventListener('DOMContentLoaded', () => {
-  initializeColorPicker();
-});
 
 /** 
  * Kristian: 6th of September 2024, BDE
@@ -271,3 +285,4 @@ document.addEventListener('DOMContentLoaded', () => {
 // Optional 16: Handle Errors:
 // Add error handling for user input validation. Show red text or border for invalid input.
 // Display error messages for invalid input.
+
