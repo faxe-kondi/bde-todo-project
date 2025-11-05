@@ -98,6 +98,7 @@ h1 {
 
 .todo-nav {
   margin: 1.34rem 0;
+  display: flex;
 }
 
 #category-filter {
@@ -105,6 +106,20 @@ h1 {
   border: 1px solid #ccc;
   border-radius: 3px;
   min-width: 150px;
+}
+
+.search-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+#search-input {
+  width: 60%;
+  padding: 0.5rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-size: 1rem;
 }
 
 .todo-list {

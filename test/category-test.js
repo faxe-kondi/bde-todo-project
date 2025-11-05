@@ -1,12 +1,12 @@
 import { Selector } from 'testcafe';
 
 // for local testing
-// fixture`Todo category test`
-//   .page('http://localhost:5173');
+fixture`Todo category test`
+  .page('http://localhost:5173');
 
 // for pipeline test
-fixture`Todo category test`
-  .page(process.env.testPage);
+// fixture`Todo category test`
+//   .page(process.env.testPage);
 
 // 🧩 Test 4: Add a todo with a category
 test('Add a todo with a category', async t => {

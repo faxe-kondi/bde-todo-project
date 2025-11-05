@@ -33,6 +33,9 @@ export let todos: Todo[] = [];
 // 9️⃣ NEW: Variable to store currently selected filter
 let currentFilter: string = 'all';
 
+// 8️⃣ NEW: Variable to store current search query
+let currentSearchQuery: string = ''; // 8️⃣ NEW
+
 // Step 4: Get references to the HTML elements
 // Get references to the HTML elements: These references will be used to interact with the DOM
 const todoInput = document.getElementById('todo-input') as HTMLInputElement; // exist in HTML file
@@ -45,7 +48,8 @@ const categoryInput = document.getElementById('category-input') as HTMLInputElem
 // 9️⃣ NEW: Get reference to category filter dropdown (add this element to your HTML)
 const categoryFilter = document.getElementById('category-filter') as HTMLSelectElement | null;
 
-
+// 8️⃣ NEW: Get reference to search input field (add this to your HTML)
+const searchInput = document.getElementById('search-input') as HTMLInputElement | null; // 8️⃣ NEW
 
 
 // Step 5: Function to add a new todo
@@ -69,9 +73,14 @@ const renderTodos = (): void => { // void because no return - what we are doing 
   todoList.innerHTML = '';
 
   // 9️⃣ NEW: Filter todos based on current category filter
-  const filteredTodos = todos.filter(todo =>
+  const filteredByCategory = todos.filter(todo =>
     currentFilter === 'all' || todo.category === currentFilter
   );
+
+  // 8️⃣ NEW: Further filter based on search query
+  const filteredTodos = filteredByCategory.filter(todo =>
+    todo.text.toLowerCase().includes(currentSearchQuery.toLowerCase())
+  ); // 8️⃣ NEW
 
   // Iterate over the filtered todos array and create list items for each todo
   filteredTodos.forEach(todo => { 
@@ -125,6 +134,13 @@ categoryFilter?.addEventListener('change', (event: Event) => {
   currentFilter = target.value;
   renderTodos();
 });
+
+// 8️⃣ NEW: Listen for search input changes
+searchInput?.addEventListener('input', (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  currentSearchQuery = target.value.trim();
+  renderTodos();
+}); // 8️⃣ NEW
 
 // Step 6.1: Function to render the list of todos
 // Initial render
