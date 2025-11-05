@@ -35,12 +35,18 @@ jobs:
 
       - name: Upate APT
         run: apt-get update
-
-      - name: Install Chromium
-        run: apt-get install -y chromium
+        
+      - name: Install Chrome
+        run: |
+          apt-get update
+          apt-get install -y wget gnupg
+          wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add -
+          sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+          apt-get update
+          apt-get install -y google-chrome-stable
 
       - name: Inject test page URL
         run: echo "testPage=${{ secrets.TEST_PAGE_URL }}" >> $GITHUB_ENV
 
       - name: Run tests
-        run: testcafe chromium:headless test/*
+        run: testcafe "chrome:headless --no-sandbox --disable-gpu" test/*
