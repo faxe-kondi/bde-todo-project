@@ -1,7 +1,7 @@
 import { Selector } from 'testcafe';
 
 fixture`Todo test`
-  .page('https://todo.tidslerne-2sem-projekt.dk');
+  .page('http://localhost:5173/');
 
     // Test 0: Check if page loads
 test('Verify page loads', async t => {
