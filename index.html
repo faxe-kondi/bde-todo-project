@@ -11,12 +11,17 @@
         <h1>Todo App</h1>
         <form class="todo-form">
           <input type="text" id="todo-input" placeholder="Add a new todo" />
+          <input type="text" id="category-input" placeholder="Todo category (optional)" />
           <button type="submit">Add</button>
         </form>
         <p id="error-message">Please enter a todo item</p>
       </div>
       <!-- error handling message : CSS added:: .input-error & #error-message -->
       <div class="todoOverview">
+        <div class="todo-nav">
+          <select id="category-filter"><option value="all">All</option></select>
+        </div>
+
         <ul class="todo-list" id="todo-list"></ul>
       </div>
     <script type="module" src="/src/main.ts"></script>
