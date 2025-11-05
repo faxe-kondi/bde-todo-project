@@ -7,13 +7,19 @@ on:
 
 jobs:
   integration-delivery:
-    runs-on: ubuntu-latest
+    # NOTICE: We're no longer running ubuntu latest, since it has some issues with TestCafe. We have degraded to version 22.04 in stead.
+    runs-on: ubuntu-22.04
     environment: Test
-    container:
-      image: node
+    # NOTICE: Node-container anymore
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+
+      # NOTICE: In stead of the container we're setting up node like this.
+      - name: Setup node
+        uses: actions/setup-node@v6
+        with:
+          node-version: latest
 
       - name: Install dependencies
         run: npm install
@@ -29,15 +35,6 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: test/todo/
           local-dir: dist/
-          
-      - name: Install Testcafe
-        run: npm install -g testcafe
-
-      - name: Upate APT
-        run: apt-get update
-
-      - name: Install Xvfb
-        run: sudo apt-get update && sudo apt-get install -y xvfb  
 
       - name: Inject test page URL
         run: echo "testPage=${{ secrets.TEST_PAGE_URL }}" >> $GITHUB_ENV
