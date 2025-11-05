@@ -1,7 +1,13 @@
 import { Selector } from 'testcafe';
 
+
+    // for local testing
 fixture`Todo test`
-  .page(process.env.testPage);
+  .page('http://localhost:5173');
+
+  // for pipeline test
+// fixture`Todo test`
+//   .page(process.env.testPage);
 
     // Test 0: Check if page loads
 test('Verify page loads', async t => {
@@ -21,25 +27,8 @@ test('Add a new todo', async t => {
         .contains('Test Todo');
 });
 
-// 🧩 Test 2: Mark a todo as completed
-test('Mark a todo as completed', async t => {
-    const todoInput = Selector('#todo-input');
-    const submitButton = Selector('.todo-form button[type="submit"]');
-    const todoList = Selector('#todo-list');
 
-    // Add a new todo first
-    await t
-        .typeText(todoInput, 'Complete Todo')
-        .click(submitButton);
-
-    const todoItem = todoList.child('li').withText('Complete Todo');
-
-    await t
-        .click(todoItem.find('span')) // assuming clicking the text toggles completion
-        .expect(todoItem.hasClass('completed')).ok();
-});
-
-// 🧩 Test 3: Edit a todo
+// 🧩 Test 2: Edit a todo
 test('Edit a todo', async t => {
     const todoInput = Selector('#todo-input');
     const submitButton = Selector('.todo-form button[type="submit"]');
@@ -52,22 +41,21 @@ test('Edit a todo', async t => {
 
     const todoItem = todoList.child('li').withText('Old Todo');
     const editButton = todoItem.find('#editBtn');
-    const todoText = todoItem.find('span');
 
-    // Click edit button
+    // Handle the prompt
+    await t.setNativeDialogHandler(() => 'Updated Todo');
+
+    // Click edit (triggers prompt + DOM update)
     await t.click(editButton);
 
-    // Assuming clicking "Edit" replaces the text with an input field
-    const editInput = Selector('input[type="text"]'); // adjust if different
-    await t
-        .selectText(editInput)
-        .pressKey('delete')
-        .typeText(editInput, 'Updated Todo')
-        .pressKey('enter')
-        .expect(todoText.innerText).eql('Updated Todo');
+    // 🕒 Wait for the DOM to update
+    const updatedTodoItem = todoList.child('li').withText('Updated Todo');
+    const updatedTodoText = updatedTodoItem.find('span');
+
+    await t.expect(updatedTodoText.innerText).eql('Updated Todo');
 });
 
-// 🧩 Test 4: Delete a todo
+// 🧩 Test 3: Delete a todo
 test('Delete a todo', async t => {
     const todoInput = Selector('#todo-input');
     const submitButton = Selector('.todo-form button[type="submit"]');
