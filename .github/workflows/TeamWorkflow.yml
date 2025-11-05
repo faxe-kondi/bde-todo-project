@@ -43,4 +43,4 @@ jobs:
         run: echo "testPage=${{ secrets.TEST_PAGE_URL }}" >> $GITHUB_ENV
 
       - name: Run tests
-        run: testcafe "chromium:headless --ignore-certificate-errors" test/*
+        run: testcafe chromium:headless test/*
