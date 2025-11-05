@@ -45,7 +45,7 @@ jobs:
           args: "chrome test/*"  
 
       - name: Store artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@latest
         with:
           name: dist
           path: dist/
@@ -56,7 +56,7 @@ jobs:
     environment: Live
     steps:
       - name: Load artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@latest
         with:
           name: dist
           path: dist/   
