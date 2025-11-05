@@ -2,12 +2,12 @@ import { Selector } from 'testcafe';
 
 
     // for local testing
-fixture`Todo test`
-  .page('http://localhost:5173');
+// fixture`Todo test`
+//   .page('http://localhost:5173');
 
   // for pipeline test
-// fixture`Todo test`
-//   .page(process.env.testPage);
+fixture`Todo test`
+  .page(process.env.testPage);
 
     // Test 0: Check if page loads
 test('Verify page loads', async t => {
