@@ -7,18 +7,18 @@
     <title>Vite + TS</title>
   </head>
   <body>
-    <div class="container">
-      <h1>Todo App</h1>
-      <form class="todo-form">
-        <input type="text" id="todo-input" placeholder="Add a new todo" />
-        <button type="submit">Add</button>
-      </form>
+      <div class="todoPanel">
+        <h1>Todo App</h1>
+        <form class="todo-form">
+          <input type="text" id="todo-input" placeholder="Add a new todo" />
+          <button type="submit">Add</button>
+        </form>
+        <p id="error-message">Please enter a todo item</p>
+      </div>
       <!-- error handling message : CSS added:: .input-error & #error-message -->
-      <p id="error-message">Please enter a todo item</p>
-      <ul class="todo-list" id="todo-list"></ul>
-
-      <input type="color" id="colorPicker" />
-    </div>
+      <div class="todoOverview">
+        <ul class="todo-list" id="todo-list"></ul>
+      </div>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

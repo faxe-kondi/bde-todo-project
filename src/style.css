@@ -25,62 +25,127 @@ body {
   background-color: var(--body-background-color);
   margin: 0;
   padding: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
 }
 
-.container {
-  background: var(--container-background-color);
-  padding: var(--container-padding);
-  border-radius: var(--container-border-radius);
-  box-shadow: var(--container-box-shadow);
-  width: var(--container-width);
+.todoPanel {
+  width: 30%;
+  height: 100%;
+  background-color: #4b3a26;
+  padding: 3rem;
+  box-sizing: border-box;
+  border-right: 4px solid #382b1d;
 }
 
+.todoOverview {
+  width: 70%;
+  height: 100%;
+  background-color: #997950;
+  box-sizing: border-box;
+  padding: 3rem;
+}
 
 h1 {
   text-align: center;
+  color: #ffffff;
 }
+
 .todo-form {
   display: flex;
   justify-content: space-between;
 }
+
 .todo-form input {
   flex: 1;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 3px;
 }
+
 .todo-form button {
-  padding: 10px;
+  padding: 10px 16px;
   border: none;
   background: #28a745;
   color: #fff;
   border-radius: 3px;
   cursor: pointer;
+  transition: background 0.2s ease;
 }
+
+.todo-form button:hover {
+  background: #218838;
+}
+
 .todo-list {
   list-style: none;
   padding: 0;
+  margin: 0;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); 
+  gap: 2.5rem; 
 }
+
 .todo-item {
-  background: #f9f9f9;
+  background: #ffffff;
   padding: 10px;
-  border-bottom: 1px solid #ddd;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  box-sizing: border-box;
+  flex-direction: column;
+  border: 1px solid #bdbdbd;
+  border-right: 3px solid #bdbdbd;
+  border-bottom: 3px solid #bdbdbd;
 }
+
+.todo-item span {
+  font-size: 32px;
+  margin-bottom: 2rem;
+}
+
+#buttonBox {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .todo-item button {
   border: none;
   background: #dc3545;
   color: #fff;
   border-radius: 3px;
   cursor: pointer;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+  width: 5rem;
+  margin-left: 1rem;
 }
 
+#removeBtn {
+  background: #dc3545;
+  border-right: 3px solid #b02a37;
+  border-bottom: 3px solid #b02a37;
+}
+
+#editBtn {
+  background: #007bff;
+  border-right: 3px solid #0056b3;
+  border-bottom: 3px solid #0056b3;
+}
+
+#removeBtn:hover {
+  background: #b02a37;
+}
+
+#editBtn:hover {
+  background: #0056b3;
+}
 
 .input-error {
   border: 2px solid red;

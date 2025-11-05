@@ -64,8 +64,10 @@ const renderTodos = (): void => { // void because no return - what we are doing 
     // Use template literals to create the HTML content for each list item
     li.innerHTML = `
       <span>${todo.text}</span>
-      <button>Remove</button>
-         <button id="editBtn">Edit</button>
+      <div id=buttonBox>
+      <button id="editBtn">Edit</button>
+      <button id="removeBtn">Remove</button>
+      </div>
     `;
     // addRemoveButtonListener is further down in the code. We have onclick in the function instead of template literals. More safe to use addEventListener.
     addRemoveButtonListener(li, todo.id); // Add event listener to the remove button. li is the parent element, and todo.id is the ID of the todo. 
@@ -116,7 +118,7 @@ todoForm.addEventListener('submit', (event: Event) => {
 // Step 8: Function to removes all a todo by ID
 // Function to add event listener to the remove button - this function has an callback function that removes the todo item from the array.
 const addRemoveButtonListener = (li: HTMLLIElement, id: number): void => {
-  const removeButton = li.querySelector('button');
+  const removeButton = li.querySelector('#removeBtn');
   removeButton?.addEventListener('click', () => removeTodo(id)); // We have an optional chaining operator here to avoid errors if the button is not found - for example, if the button is removed from the DOM.
 };
 /*
@@ -269,4 +271,3 @@ document.addEventListener('DOMContentLoaded', () => {
 // Optional 16: Handle Errors:
 // Add error handling for user input validation. Show red text or border for invalid input.
 // Display error messages for invalid input.
-
