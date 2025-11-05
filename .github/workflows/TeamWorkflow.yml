@@ -36,6 +36,9 @@ jobs:
       - name: Upate APT
         run: apt-get update
 
+      - name: Install Xvfb
+        run: sudo apt-get update && sudo apt-get install -y xvfb  
+
       - name: Inject test page URL
         run: echo "testPage=${{ secrets.TEST_PAGE_URL }}" >> $GITHUB_ENV
 
