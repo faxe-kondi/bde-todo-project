@@ -43,13 +43,13 @@ const todoForm = document.querySelector('.todo-form') as HTMLFormElement;    // 
 const todoList = document.getElementById('todo-list') as HTMLUListElement;   // exist in HTML file
 
 // 9️⃣ NEW: Get reference to category input field
-const categoryInput = document.getElementById('category-input') as HTMLInputElement | null;
+const categoryInput = document.getElementById('category-input') as HTMLInputElement;
 
-// 9️⃣ NEW: Get reference to category filter dropdown (add this element to your HTML)
-const categoryFilter = document.getElementById('category-filter') as HTMLSelectElement | null;
+// 9️⃣ NEW: Get reference to category filter dropdown
+const categoryFilter = document.getElementById('category-filter') as HTMLSelectElement;
 
-// 8️⃣ NEW: Get reference to search input field (add this to your HTML)
-const searchInput = document.getElementById('search-input') as HTMLInputElement | null; // 8️⃣ NEW
+// 8️⃣ NEW: Get reference to search input field
+const searchInput = document.getElementById('search-input') as HTMLInputElement; // 8️⃣ NEW
 
 
 // Step 5: Function to add a new todo
@@ -167,23 +167,6 @@ searchInput?.addEventListener('input', (event: Event) => {
 // Initial render
 renderTodos();
 
-
-// Step 7: Event listener for the form submission
-// Event listener for the form submission: This listener handles the form submission, adds the new todo, and clears the input field.
-todoForm.addEventListener('submit', (event: Event) => {
-  event.preventDefault(); 
-  const text = todoInput.value.trim(); 
-  
-  // 9️⃣ NEW: Get category input value
-  const category = categoryInput ? categoryInput.value.trim() : '';
-
-  if (text !== '') { 
-    addTodo(text, category); // 9️⃣ UPDATED: pass category
-    todoInput.value = ''; 
-    if (categoryInput) categoryInput.value = ''; // 9️⃣ NEW: Clear category input
-  }
-});
-
 //Improved code for step 7 - user input validation
 const errorMessage = document.getElementById('error-message') as HTMLParagraphElement;
 
@@ -233,7 +216,7 @@ const editTodo = (id:number) => {
     const category = prompt('Edit category', todo.category || '')
     if (text) {
       todo.text = text
-      todo.category = category || 'Uncategorized' // 9️⃣ NEW: update category
+      todo.category = category || '' // 9️⃣ NEW: update category
       renderTodos()
     }
   }
