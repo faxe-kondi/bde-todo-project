@@ -59,7 +59,7 @@ export const addTodo = (text: string, category?: string): void => { // 9️⃣ U
     id: Date.now(), // Generate a unique ID based on the current timestamp
     text: text,
     completed: false,
-    category: category || 'Uncategorized', // 9️⃣ NEW: default category if none entered
+    category: category, // 9️⃣ NEW: default category if none entered
   };
   todos.push(newTodo);
   console.log("Todo added: ", todos); // Log the updated list of todos to the console
