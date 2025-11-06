@@ -86,15 +86,21 @@ const renderTodos = (): void => { // void because no return - what we are doing 
   filteredTodos.forEach(todo => { 
     const li = document.createElement('li');
     li.className = 'todo-item'; // Add a class to the list item
+
     // Use template literals to create the HTML content for each list item
     li.innerHTML = `
-        <span>${todo.text}</span>
+        <span class="${todo.completed ? 'completed' : ''}">${todo.text}</span>
         <span id="todo-category">${todo.category}</span> <!-- 9️⃣ NEW: show category -->
       <div id="buttonBox">
+        <button id="toggleBtn">${todo.completed ? 'Undo' : 'Complete'}</button> <!-- 2️⃣ NEW: toggle button -->
         <button id="editBtn">Edit</button>
         <button id="removeBtn">Remove</button>
       </div>
     `;
+
+    // 2️⃣ NEW: Add toggle button listener
+    addToggleButtonListener(li, todo.id);
+
     addRemoveButtonListener(li, todo.id); 
     addEditButtonListener(li, todo.id); 
     todoList.appendChild(li);
@@ -102,6 +108,21 @@ const renderTodos = (): void => { // void because no return - what we are doing 
 
   // 9️⃣ NEW: Update dropdown options every time list is rendered
   updateCategoryFilterOptions();
+};
+
+// 2️⃣ NEW: Function to toggle the completed status of a todo
+const toggleTodo = (id: number): void => {
+  const todo = todos.find(todo => todo.id === id);
+  if (todo) {
+    todo.completed = !todo.completed;
+    renderTodos();
+  }
+};
+
+// 2️⃣ NEW: Add event listener for toggle button
+const addToggleButtonListener = (li: HTMLLIElement, id: number): void => {
+  const toggleButton = li.querySelector('#toggleBtn');
+  toggleButton?.addEventListener('click', () => toggleTodo(id));
 };
 
 // 9️⃣ NEW: Function to update category filter dropdown dynamically
@@ -217,6 +238,7 @@ const editTodo = (id:number) => {
     }
   }
 }
+
 
 /** 
  * Kristian: 6th of September 2024, BDE
