@@ -191,13 +191,13 @@ h1 {
 
 #toggleBtn {
   background: #28a745;
-  border-right: 3px solid #1e7e34;
-  border-bottom: 3px solid #1e7e34;
+  border-right: 3px solid #218838;
+  border-bottom: 3px solid #218838; 
   margin: 8px auto 0 0;
 }
 
 #toggleBtn:hover {
-  background: #1e7e34;
+  background: #218838;
 }
 
 .completed {
